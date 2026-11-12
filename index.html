@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel de Metas e Sortimento — Demo</title>
+<style>
+:root{--bg:#07201b;--bg2:#0d2f28;--card:#10352d;--line:#1f4a40;--tx:#e9f5ef;--mut:#8db3a5;--ac:#e4f26f;--ac2:#7fe0a8;--bad:#ff6b6b;--ok:#4ade80}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#14493c 0,var(--bg) 60%) fixed;color:var(--tx);font:14px/1.45 system-ui,Segoe UI,Roboto,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px;border-bottom:3px solid var(--ac);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#07201b;font-weight:900;display:grid;place-items:center;font-size:18px}
+.brand b{color:var(--ac);font-size:18px;display:block}.brand small{color:var(--mut);letter-spacing:.08em;font-size:11px}
+.user{color:var(--mut);font-size:13px}
+.demo{background:#3a3a12;color:#fff6a8;text-align:center;padding:6px 12px;font-size:12px}
+nav{display:flex;gap:6px;padding:14px 20px 0;overflow-x:auto}
+nav button{background:var(--bg2);color:var(--mut);border:1px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;padding:10px 16px;font-weight:600;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--card);color:var(--tx);box-shadow:inset 0 3px var(--ac)}
+main{margin:0 20px 30px;background:var(--card);border:1px solid var(--line);border-radius:0 14px 14px 14px;padding:20px}
+.hero{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:center}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.ring{position:relative;width:260px;height:260px;margin:auto}.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .c b{font-size:48px}.ring .c span{color:var(--mut);font-size:13px}
+.eyebrow{color:var(--mut);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+h2{margin:4px 0;color:var(--ac);font-size:22px}
+.big{font-size:44px;font-weight:800}.big small{font-size:14px;color:var(--mut);font-weight:400}
+.pill{display:inline-block;background:#1b8a4d;color:#fff;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:700;vertical-align:middle;margin-left:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:14px 0}
+.kpi{border-left:3px solid var(--ac);padding-left:10px}.kpi small{display:block;color:var(--mut);font-size:11px;letter-spacing:.08em;text-transform:uppercase}.kpi b{font-size:20px}.kpi i{display:block;color:var(--ac2);font-size:12px;font-style:normal}
+svg text{fill:var(--mut);font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
+.box{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px}.box small{color:var(--mut);display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em}.box b{font-size:24px}.box span{color:var(--mut);font-size:12px;display:block}
+.bar{height:10px;border-radius:9px;background:#1b463c;margin:10px 0 4px;position:relative;overflow:hidden}.bar>i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--ac2),var(--ac));border-radius:9px}
+.sort{margin-top:20px;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:16px}
+.sort h3{margin:0 0 4px;color:var(--ac);font-size:13px;letter-spacing:.1em}.sort .v{font-size:36px;font-weight:800}
+.marks{position:relative;height:10px;background:#1b463c;border-radius:9px;margin:10px 0}.marks i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--ac2),var(--ac));border-radius:9px}.marks u{position:absolute;top:-3px;bottom:-3px;width:2px;background:#fff8}
+.legend{display:flex;gap:18px;color:var(--mut);font-size:12px;flex-wrap:wrap}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.tools input,.tools select{background:var(--bg2);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:8px 10px}.tools input{flex:1;min-width:180px}
+.tw{overflow:auto;max-height:560px;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:12px}th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+thead th{position:sticky;top:0;background:#0a2923;z-index:2;color:var(--mut);font-weight:600}
+th.rot{height:130px;vertical-align:bottom;padding:4px 2px;text-align:center}th.rot div{writing-mode:vertical-rl;transform:rotate(180deg);margin:auto;font-size:11px}
+td.s{text-align:center;font-weight:800}.y{color:var(--ok)}.n{color:var(--bad)}.d{color:#4b6f63}
+.pc{font-weight:700}.low{color:var(--bad)}.mid{color:#ffd166}.hi{color:var(--ok)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.rank td:first-child{width:36px;color:var(--mut)}.rank .bar{margin:0;min-width:140px}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:0 20px 30px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">DM</div><div><b>Painel de Metas</b><small>DISTRIBUIDORA EXEMPLO · CANAL FARMA</small></div></div>
+  <div class="user">Gestor · Visão geral do time</div>
+</header>
+<div class="demo">Versão de demonstração — todos os nomes, clientes e números são fictícios.</div>
+<nav id="tabs">
+  <button class="on" data-t="resumo">Resumo</button>
+  <button data-t="sort">Sortimento</button>
+  <button data-t="rank">Equipe</button>
+</nav>
+<main>
+<section id="resumo">
+  <div class="hero">
+    <div class="ring"><svg viewBox="0 0 260 260" width="260" height="260" id="ringsvg"></svg><div class="c"><b>55,8%</b><span>da meta do mês</span><span>plano até hoje: 38,0%</span></div></div>
+    <div>
+      <div class="eyebrow">Mês demonstrativo · dia útil 8 de 20</div>
+      <h2>Time Exemplo · Farma</h2>
+      <div class="big">R$ 1.004.400 <small>de R$ 1.800.000</small><span class="pill">Tende a bater a meta</span></div>
+      <div class="kpis">
+        <div class="kpi"><small>Falta para a meta</small><b>R$ 795.600</b><i>12 dias úteis restantes</i></div>
+        <div class="kpi"><small>Necessário por dia útil</small><b>R$ 66.300</b></div>
+        <div class="kpi"><small>Plano até hoje</small><b>R$ 684.000</b><i>R$ 320.400 acima do plano</i></div>
+        <div class="kpi"><small>Projeção de fechamento</small><b>R$ 2.511.000</b><i>139,5% da meta no ritmo atual</i></div>
+      </div>
+      <svg id="chart" viewBox="0 0 760 240" width="100%"></svg>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="box"><small>Cobertura</small><b>22 de 36</b><span>61,1% da carteira</span><div class="bar"><i style="width:61.1%"></i></div></div>
+    <div class="box"><small>Clientes que compraram</small><b>94 de 140</b><span>67,1%</span><div class="bar"><i style="width:67.1%"></i></div></div>
+    <div class="box"><small>Itens foco · positivados</small><b>118 de 130</b><span>90,8%</span><div class="bar"><i style="width:90.8%"></i></div></div>
+    <div class="box"><small>Aderência ao roteiro</small><b>15 de 34</b><span>44,1% · 2 em atraso</span><div class="bar"><i style="width:44.1%"></i></div></div>
+  </div>
+  <div class="sort">
+    <h3>SORTIMENTO PRIORITÁRIO <span style="color:var(--mut);font-weight:400;letter-spacing:0">· consolidado do time</span></h3>
+    <div class="v">43,2% <small style="font-size:13px;color:var(--mut);font-weight:400">1.340 de 3.100 pontos</small></div>
+    <div class="marks"><i style="width:43.2%"></i><u style="left:41.7%"></u><u style="left:45.7%"></u><u style="left:49.7%"></u></div>
+    <div class="legend"><span>Mínimo 41,7% · <b style="color:var(--ok)">atingido</b></span><span>Meta 45,7% · faltam 77 pts</span><span>Ideal 49,7% · faltam 201 pts</span></div>
+  </div>
+</section>
+
+<section id="sort" class="hide">
+  <div class="eyebrow">Matriz de sortimento</div>
+  <h2>Quem já vendeu o quê</h2>
+  <div class="stats" id="stats"></div>
+  <div class="tools">
+    <select id="fv"><option value="">Todas as vendedoras</option></select>
+    <input id="q" placeholder="Buscar cliente…">
+    <select id="ord"><option value="a">Menor % primeiro</option><option value="d">Maior % primeiro</option></select>
+  </div>
+  <div class="tw"><table id="tb"></table></div>
+  <p style="color:var(--mut);font-size:12px">✓ já vendeu o item no mês · ✗ ainda falta. Clientes com menos itens aparecem primeiro.</p>
+</section>
+
+<section id="rank" class="hide">
+  <div class="eyebrow">Desempenho individual</div>
+  <h2>Ranking da equipe</h2>
+  <div class="tw"><table class="rank" id="rk"></table></div>
+</section>
+</main>
+<footer>Painel de demonstração · HTML, CSS e JavaScript puros · dados gerados aleatoriamente</footer>
+
+<script>
+// ---------- util ----------
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const fmt=n=>n.toLocaleString('pt-BR');
+// ---------- tabs ----------
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  ['resumo','sort','rank'].forEach(id=>document.getElementById(id).classList.toggle('hide',id!==b.dataset.t));
+});
+// ---------- ring ----------
+(function(){const r=112,c=2*Math.PI*r,p=.558;
+document.getElementById('ringsvg').innerHTML=
+`<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7fe0a8"/><stop offset="1" stop-color="#e4f26f"/></linearGradient></defs>
+<circle cx="130" cy="130" r="${r}" fill="none" stroke="#1b463c" stroke-width="22"/>
+<circle cx="130" cy="130" r="${r}" fill="none" stroke="url(#g)" stroke-width="22" stroke-linecap="round" stroke-dasharray="${c*p} ${c}" transform="rotate(-90 130 130)"/>`})();
+// ---------- chart ----------
+(function(){
+const W=760,H=240,L=46,B=30,T=14,R=16,days=20,max=2.6e6;
+const x=d=>L+(W-L-R)*(d-1)/(days-1),y=v=>H-B-(H-B-T)*v/max;
+let plan=[],real=[],acc=0,pl=0;
+for(let d=1;d<=days;d++){pl+=1.8e6/days*(.6+.8*Math.sin(d/3.2)**2);plan.push(pl)}
+const k=1.8e6/plan[days-1];plan=plan.map(v=>v*k);
+const inc=[0,40,0,150,210,230,150,224.4].map(v=>v*1000);let tot=0;
+for(let d=1;d<=8;d++){tot+=inc[d-1];real.push(tot)}
+let g='';[0,.5e6,1e6,1.5e6,2e6,2.5e6].forEach(v=>g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#1f4a40"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v?(v/1e6).toLocaleString('pt-BR')+' mi':0}</text>`);
+[1,5,10,15,20].forEach(d=>g+=`<text x="${x(d)}" y="${H-8}" text-anchor="middle">${d}</text>`);
+const path=a=>a.map((v,i)=>(i?'L':'M')+x(i+1)+','+y(v)).join(' ');
+const proj=[[8,real[7]],[20,real[7]/8*20]];
+document.getElementById('chart').innerHTML=g+
+`<path d="${path(plan)}" fill="none" stroke="#8db3a5" stroke-dasharray="5 4" stroke-width="1.6"/>
+<path d="${path(real)} L${x(8)},${y(0)} L${x(1)},${y(0)}Z" fill="#e4f26f22"/>
+<path d="${path(real)}" fill="none" stroke="#e4f26f" stroke-width="3"/>
+<path d="M${x(8)},${y(proj[0][1])} L${x(20)},${y(Math.min(proj[1][1],2.55e6))}" stroke="#e4f26f" stroke-dasharray="2 5" stroke-width="2.4" stroke-linecap="round"/>
+<circle cx="${x(8)}" cy="${y(real[7])}" r="5" fill="#e4f26f"/><text x="${x(8)}" y="${y(real[7])-10}" text-anchor="middle" style="fill:#fff;font-weight:700">1,0 mi</text>
+<text x="${W-R}" y="${y(2.55e6)-8}" text-anchor="end" style="fill:#e4f26f">tendência 2,5 mi</text>`;
+})();
+// ---------- sortimento ----------
+const vend=['Ana','Bianca','Carla','Daniela','Elisa'];
+const bandeiras=['Rede Vida','Farma Mais','Droga Sul','Bem Estar','Independente','Saúde Já'];
+const nomes=['Drogaria Aurora','Farmácia Central','Droga Vitória','Farma Popular','Drogaria Horizonte','Farmácia Bom Preço','Drogaria Nova Era','Farma Express','Drogaria do Parque','Farmácia Santa Luz','Droga Total','Farmácia Brasil','Drogaria Fênix','Farma Ponto','Drogaria Campos','Farmácia Primavera','Droga Ideal','Farmácia Boa Saúde','Drogaria Pioneira','Farma Plus','Drogaria Centro','Farmácia Esperança','Droga Rápida','Farmácia União','Drogaria Atlântico','Farma Direta','Drogaria Jardim','Farmácia Solar'];
+const prods=['Produto A 400g','Produto B 800g','Linha Infantil 1','Linha Infantil 2','Linha Sênior','Sem Lactose 400g','Fórmula Premium','Sachê Mix 6x','Cereal Bebê','Suplemento 350g'];
+const cli=nomes.map((n,i)=>{const cat=i%3?'CAT 6 a 8':'CAT 1 a 5';const pts=cat==='CAT 1 a 5'?29:15;
+  const dens=rnd()<.1?0:.3+rnd()*.7;
+  const m=prods.map(()=>rnd()<.12?null:(rnd()<dens*.8));
+  const pos=m.filter(Boolean).length;const tot=m.filter(v=>v!==null).length||1;
+  return{n,b:bandeiras[i%bandeiras.length],v:vend[i%vend.length],cat,pts,pos:Math.round(pos/tot*pts),m,pc:pos/tot}});
+const fvSel=document.getElementById('fv');vend.forEach(v=>fvSel.add(new Option(v,v)));
+function stats(list){const pts=list.length*0+list.reduce((a,c)=>a+c.pts,0),ob=list.reduce((a,c)=>a+c.pos,0);
+ document.getElementById('stats').innerHTML=[['Clientes no painel',list.length],['Clientes compradores',list.filter(c=>c.pos>0).length],['Pontos possíveis',fmt(pts)],['Pontos obtidos',fmt(ob)+' ('+(pts?(ob/pts*100).toFixed(1).replace('.',','):0)+'%)'],['Pontos faltando',fmt(pts-ob)]]
+ .map(([a,b])=>`<div class="box"><b>${b}</b><span>${a}</span></div>`).join('')}
+function draw(){
+ const f=fvSel.value,q=document.getElementById('q').value.toLowerCase(),o=document.getElementById('ord').value;
+ let list=cli.filter(c=>(!f||c.v===f)&&c.n.toLowerCase().includes(q));
+ list.sort((a,b)=>o==='a'?a.pc-b.pc:b.pc-a.pc);stats(list);
+ const cls=p=>p<.2?'low':p<.5?'mid':'hi';
+ document.getElementById('tb').innerHTML=`<thead><tr><th>Razão social</th><th>Bandeira</th><th>Vendedora</th><th>Pts</th><th>Positivados</th><th>% Sort.</th><th>Categoria</th>${prods.map(p=>`<th class="rot"><div>${p}</div></th>`).join('')}</tr></thead><tbody>`+
+ list.map(c=>`<tr><td>${c.n.toUpperCase()}</td><td>${c.b}</td><td>${c.v}</td><td>${c.pts}</td><td>${c.pos}</td><td class="pc ${cls(c.pc)}">${(c.pc*100).toFixed(1).replace('.',',')}%</td><td>${c.cat}</td>${c.m.map(v=>v===null?'<td class="s d">–</td>':v?'<td class="s y">✓</td>':'<td class="s n">✗</td>').join('')}</tr>`).join('')+'</tbody>';}
+['fv','q','ord'].forEach(id=>document.getElementById(id).addEventListener('input',draw));draw();
+// ---------- ranking ----------
+(function(){const d=[['Ana',231,380],['Bianca',208,360],['Carla',196,360],['Daniela',187,350],['Elisa',182,350]];
+document.getElementById('rk').innerHTML='<thead><tr><th>#</th><th>Vendedora</th><th>Vendido (R$ mil)</th><th>Meta (R$ mil)</th><th>Atingimento</th><th style="width:30%">Progresso</th></tr></thead><tbody>'+
+d.map((r,i)=>{const p=r[1]/r[2];return`<tr><td>${i+1}</td><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="pc ${p>.7?'hi':p>.55?'mid':'low'}">${(p*100).toFixed(1).replace('.',',')}%</td><td><div class="bar"><i style="width:${Math.min(p*100,100)}%"></i></div></td></tr>`}).join('')+'</tbody>'})();
+</script>
+</body>
+</html>
